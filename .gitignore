@@ -1,0 +1,20 @@
+# SPM
+.build/
+.swiftpm/
+
+# ssg output
+public/
+example-site/public/
+
+# Cache (Faza 3)
+.ssg-cache/
+
+# macOS
+.DS_Store
+*.xcuserstate
+*.xcworkspace
+xcuserdata/
+
+# Edytory
+.vscode/
+*.swp
