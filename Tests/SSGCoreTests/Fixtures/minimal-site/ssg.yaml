@@ -1,0 +1,12 @@
+# Konfiguracja testowa
+
+contentDir: content
+outputDir: public
+templatesDir: templates
+assetsDir: assets
+
+site:
+  title: Test Site
+  description: Testowy opis
+  baseURL: https://example.com
+  language: pl
