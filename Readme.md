@@ -1,10 +1,3 @@
-//
-//  Readme.md
-//  SSG
-//
-//  Created by Michał Rudnicki on 23/03/2026.
-//
-
 # ssg — Static Site Generator
 
 Konsolowy generator stron statycznych.
