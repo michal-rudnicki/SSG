@@ -55,9 +55,7 @@ struct FrontMatterParserTests {
         title: Bez zamknięcia
         date: 2026-03-20
         """
-        #expect(throws: SSGError.self) {
-            try FrontMatterParser.parse(input, filePath: "broken.md")
-        }
+        #expect(throws: SSGError.self) { try FrontMatterParser.parse(input, filePath: "broken.md") }
     }
     @Test("Pusta wartość ('title:') daje pusty String, nie błąd")
     func emptyValues() throws {

@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct MarkdownParser: Sendable {
     public static func toHTML(_ markdown: String) -> String {
         let lines = markdown.components(separatedBy: "\n")
@@ -49,8 +48,7 @@ public struct MarkdownParser: Sendable {
                     html += "<h\(level) id=\"\(id)\">\(renderInline(text))</h\(level)>\n"
                     i += 1
                     continue
-                }
-            }
+                }   }
             if trimmed == "---" {
                 html += "<hr>\n"
                 i += 1
@@ -67,8 +65,7 @@ public struct MarkdownParser: Sendable {
                         i += 1
                     } else {
                         break
-                    }
-                }
+                }   }
                 let quoteText = quoteLines.joined(separator: " ")
                 html += "<blockquote><p>\(renderInline(quoteText))</p></blockquote>\n"
                 continue
@@ -85,8 +82,7 @@ public struct MarkdownParser: Sendable {
                         i += 1
                     } else {
                         break
-                    }
-                }
+                }   }
                 html += "<ul>\n"
                 for item in items { html += "<li>\(renderInline(item))</li>\n" }
                 html += "</ul>\n"
@@ -116,7 +112,6 @@ public struct MarkdownParser: Sendable {
                 paraLines.append(lines[i])
                 i += 1
             }
-
             if !paraLines.isEmpty {
                 var parts: [String] = []
                 for (idx, pLine) in paraLines.enumerated() {
@@ -125,12 +120,9 @@ public struct MarkdownParser: Sendable {
                         parts.append(renderInline(String(pLine.dropLast(2))) + "<br>")
                     } else {
                         parts.append(renderInline(pLine))
-                    }
-                }
+                    }   }
                 html += "<p>\(parts.joined(separator: "\n"))</p>\n"
-            }
-        }
-
+            }   }
         return html
     }
     static func isBlockStart(_ trimmed: String) -> Bool {
@@ -144,8 +136,7 @@ public struct MarkdownParser: Sendable {
             if level <= 6 {
                 let after = trimmed.dropFirst(level)
                 if after.isEmpty || after.first == " " { return true }
-            }
-        }
+        }   }
         return false
     }
     static func escapeCode(_ text: String) -> String {
@@ -161,49 +152,26 @@ public struct MarkdownParser: Sendable {
                 result.append("-")
             } else if (char >= "a" && char <= "z") || (char >= "0" && char <= "9") || char == "-" {
                 result.append(char)
-            }
-        }
+        }   }
         return result
     }
     static func renderInline(_ text: String) -> String {
         var result = text
         var codeSpans: [String] = []
         result = extractCodeSpans(result, into: &codeSpans)
-        result = result.replacingOccurrences(
-            of: #"\*\*(.+?)\*\*"#, with: "<strong>$1</strong>",
-            options: .regularExpression
-        )
-        result = result.replacingOccurrences(
-            of: #"__(.+?)__"#, with: "<strong>$1</strong>",
-            options: .regularExpression
-        )
-        result = result.replacingOccurrences(
-            of: #"\*(.+?)\*"#, with: "<em>$1</em>",
-            options: .regularExpression
-        )
-        result = result.replacingOccurrences(
-            of: #"_(.+?)_"#, with: "<em>$1</em>",
-            options: .regularExpression
-        )
-        result = result.replacingOccurrences(
-            of: #"!\[([^\]]*)\]\(([^)]+)\)"#,
-            with: "<img src=\"$2\" alt=\"$1\">",
-            options: .regularExpression
-        )
-        result = result.replacingOccurrences(
-            of: #"\[([^\]]+)\]\(([^)]+)\)"#,
-            with: "<a href=\"$2\">$1</a>",
-            options: .regularExpression
-        )
+        result = result.replacingOccurrences(of: #"\*\*(.+?)\*\*"#, with: "<strong>$1</strong>", options: .regularExpression)
+        result = result.replacingOccurrences(of: #"__(.+?)__"#, with: "<strong>$1</strong>", options: .regularExpression)
+        result = result.replacingOccurrences(of: #"\*(.+?)\*"#, with: "<em>$1</em>", options: .regularExpression)
+        result = result.replacingOccurrences(of: #"_(.+?)_"#, with: "<em>$1</em>", options: .regularExpression)
+        result = result.replacingOccurrences(of: #"!\[([^\]]*)\]\(([^)]+)\)"#, with: "<img src=\"$2\" alt=\"$1\">", options: .regularExpression)
+        result = result.replacingOccurrences(of: #"\[([^\]]+)\]\(([^)]+)\)"#, with: "<a href=\"$2\">$1</a>", options: .regularExpression)
         for (index, span) in codeSpans.enumerated() {
-            result = result.replacingOccurrences(
-                of: "\u{0002}CODE\(index)\u{0003}", with: span
-            )
+            result = result.replacingOccurrences(of: "\u{0002}CODE\(index)\u{0003}", with: span)
         }
         return result
     }
     private static func extractCodeSpans(_ text: String, into spans: inout [String]) -> String {
-        var result   = ""
+        var result = ""
         var remaining = text[text.startIndex...]  // Substring — nie kopiuje danych
 
         while let backtickStart = remaining.firstIndex(of: "`") {
@@ -220,8 +188,7 @@ public struct MarkdownParser: Sendable {
             } else {
                 result += "`"
                 remaining = remaining[contentStart...]
-            }
-        }
+        }   }
         result += remaining
         return result
     }

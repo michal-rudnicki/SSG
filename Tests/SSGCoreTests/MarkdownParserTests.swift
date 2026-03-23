@@ -111,7 +111,6 @@ struct CodeBlockTests {
     }
     @Test("& escapowany przed < > — brak double-escape")
     func escapeOrder() {
-        // Gdyby kolejność była zła: "&lt;" → "&amp;lt;" zamiast "&lt;"
         let md = "```\n&lt;\n```"
         let out = MarkdownParser.toHTML(md)
         #expect(out.contains("&amp;lt;"))
@@ -217,7 +216,6 @@ struct ParagraphTests {
     func multiline() {
         let md = "Linia pierwsza\nLinia druga"
         let out = MarkdownParser.toHTML(md)
-        // Obie linie w jednym <p>
         #expect(out.contains("<p>"))
         #expect(out.contains("Linia pierwsza"))
         #expect(out.contains("Linia druga"))
@@ -294,7 +292,6 @@ struct InlineCodeTests {
     @Test("Inline code NIE parsuje **bold** w środku")
     func codeNotParsedAsBold() {
         let out = MarkdownParser.toHTML("`**not bold**`")
-        // Literalne ** w środku kodu — NIE staje się <strong>
         #expect(out == "<p><code>**not bold**</code></p>\n")
     }
     @Test("Inline code NIE parsuje _italic_ w środku")
@@ -304,10 +301,9 @@ struct InlineCodeTests {
     }
     @Test("Niezamknięty backtick — traktowany literalnie")
     func unclosedBacktick() {
-        // Brak zamykającego ` — backtick zostaje w tekście, nie crashuje
         let out = MarkdownParser.toHTML("tekst ` bez zamknięcia")
-        #expect(out.contains("<p>"))   // coś wygenerowało
-        #expect(!out.contains("<code>"))  // brak tagu code
+        #expect(out.contains("<p>"))
+        #expect(!out.contains("<code>"))
     }
     @Test("Dwa inline code w tej samej linii")
     func twoCodeSpans() {
@@ -368,10 +364,8 @@ struct LineBreakTests {
     }
     @Test("Ostatnia linia paragrafu — nigdy nie dostaje <br>")
     func lastLineNoBr() {
-        // Nawet jeśli ostatnia linia kończy się dwoma spacjami — brak <br>
         let md = "Jedyna linia  "
         let out = MarkdownParser.toHTML(md)
-        // Trailing spaces usuwane przez trim — brak <br>
         #expect(!out.contains("<br>"))
     }
 }
@@ -418,7 +412,6 @@ struct EscapeCodeTests {
     }
     @Test("Kolejność: & escapowany przed < i > — brak double-escape")
     func order() {
-        // "&lt;" w wejściu → "&amp;lt;" w wyjściu (& escape'owany PIERWSZY)
         #expect(MarkdownParser.escapeCode("&lt;") == "&amp;lt;")
     }
     @Test("Tekst bez znaków specjalnych — bez zmian")
@@ -432,7 +425,6 @@ struct EdgeCaseTests {
     func rawHtmlPassthrough() {
         let md = "<div class=\"foo\">content</div>"
         let out = MarkdownParser.toHTML(md)
-        // Raw HTML nie jest escapowany — trafia do output jako paragraf
         #expect(out.contains("<div class=\"foo\">content</div>"))
     }
     @Test("Bold z italic zagnieżdżonym — oba renderowane")
@@ -452,7 +444,6 @@ struct EdgeCaseTests {
     func listBreaksParagraph() {
         let md = "Tekst\n- Item"
         let out = MarkdownParser.toHTML(md)
-        // Lista jest "block start" — przerywa paragraf
         #expect(out.contains("<p>Tekst</p>"))
         #expect(out.contains("<ul>"))
     }
@@ -462,7 +453,6 @@ struct EdgeCaseTests {
         let out = MarkdownParser.toHTML(md)
         #expect(out.contains("first"))
         #expect(out.contains("second"))
-        // Dwa osobne bloki <pre>
         let count = out.components(separatedBy: "<pre>").count - 1
         #expect(count == 2)
     }

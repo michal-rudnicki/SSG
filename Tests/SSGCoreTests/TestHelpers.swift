@@ -27,4 +27,13 @@ struct TestFixtures {
         )
         return url
     }
+    static func makeConfig(fixture: String, outputDir: URL) -> Config {
+        let input = url(for: fixture)
+        var config = Config()
+        config.contentDir   = input.appending(path: "content").path()
+        config.templatesDir = input.appending(path: "templates").path()
+        config.assetsDir    = input.appending(path: "assets").path()
+        config.outputDir    = outputDir.path()
+        return config
+    }
 }

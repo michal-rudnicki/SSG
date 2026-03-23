@@ -1,12 +1,12 @@
-# Konfiguracja testowa
+# Konfiguracja testowa dla minimal-site fixture
 
-contentDir: content
-outputDir: public
+contentDir:   content
+outputDir:    public
 templatesDir: templates
-assetsDir: assets
+assetsDir:    assets
 
 site:
-  title: Test Site
-  description: Testowy opis
-  baseURL: https://example.com
-  language: pl
+  title:       Test Site
+  description: Testowy opis strony
+  baseURL:     https://example.com
+  language:    pl
